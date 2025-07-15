@@ -1,43 +1,39 @@
 <?php
-include 'conexion.php';
-session_start();
+$servidor = "localhost";
+$usuario = "root";
+$contrasena = "";
+$base_de_datos = "materias";
 
-// Validación de entrada
-$usuario = isset($_POST['usuario']) ? trim($_POST['usuario']) : '';
-$password = isset($_POST['password']) ? trim($_POST['password']) : '';
+$conn = new mysqli($servidor, $usuario, $contrasena, $base_de_datos);
 
-// Verifica que los campos no estén vacíos
-if (empty($usuario) || empty($password)) {
-    $_SESSION['error'] = 'Debes completar todos los campos.';
-    header('Location: index.php');
-    exit();
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+} else {
+    echo " Conexión exitosa a la base de datos.";
 }
 
-// Consulta preparada
-$sql = "SELECT * FROM usuario WHERE nombre = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $usuario);
-$stmt->execute();
-$result = $stmt->get_result();
+$usu = $_POST["usuario"];
+$contra = $_POST["password"];
 
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
 
-    if (password_verify($password, $row['password'])) {
-        $_SESSION['usuario'] = $row['nombre']; // Puedes guardar también ID u otros datos
-        header("Location: bienvenido.php");
-        exit();
-    } else {
-        $_SESSION['error'] = 'Contraseña incorrecta.';
-        header('Location: index.php');
-        exit();
+$sql = "SELECT nombre, password FROM usuario";
+$resultado = $conn->query($sql);
+
+if ($resultado->num_rows >= 0) {
+    while($fila = $resultado->fetch_assoc()) {
+        $us = $fila["nombre"];
+        $co = $fila["password"];
     }
 } else {
-    $_SESSION['error'] = 'Usuario no encontrado.';
-    header('Location: index.php');
-    exit();
+    echo "No se encontraron resultados.";
 }
 
-$stmt->close();
+if ($usu == $us && $contra == $co) {
+    header("Location: bienvenido.php");
+    exit(); // Siempre es buena práctica finalizar el script después de redireccionar
+} else {
+    echo "Usuario no válido";
+}
+
 $conn->close();
-?>
+?> 
