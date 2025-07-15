@@ -17,12 +17,16 @@
                         <input type="text" class="form-control" name="nombre" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Apellido</label>
-                        <input type="text" class="form-control" name="apellido" required>
-                    </div>
-                    <div class="mb-3">
                         <label class="form-label">Contraseña</label>
                         <input type="password" class="form-control" name="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Edad</label>
+                        <input type="text" class="form-control" name="edad" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">fecha de nacimiento</label>
+                        <input type="date" class="form-control" name="fecha" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Registrar</button>
                 </form>
@@ -32,3 +36,4 @@
 </div>
 </body>
 </html>
+
